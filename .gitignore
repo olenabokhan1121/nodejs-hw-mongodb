@@ -3,3 +3,9 @@
 .vscode
 .DS_Store
 .idea
+
+wg3OKWkVIDh0frJg
+exdbBokhan  Username
+ex.dbBokhan1121 Password
+mongodb+srv://exdbBokhan:ex.dbBokhan1121@cluster.ligfhia.mongodb.net/?retryWrites=true&w=majority&appName=Cluster
+Replace <db_password> with the password for the exdbBokhan database user. Ensure any option params are
