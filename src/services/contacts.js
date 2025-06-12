@@ -1,10 +1,16 @@
 import { Contact } from '../db/models/contacts.js';
-export const getAllContacts = async ({ page, perPage, sortBy, sortOrder }) => {
+export const getAllContacts = async ({
+  page,
+  perPage,
+  sortBy,
+  sortOrder,
+  userId,
+}) => {
   const skip = page > 0 ? (page - 1) * perPage : 0;
-  const contactQuery = Contact.find(); //масив даних
+  const contactQuery = Contact.find({ userId }); //масив даних
 
   const [total, contacts] = await Promise.all([
-    Contact.countDocuments(/*contactQuery*/),
+    Contact.countDocuments({ userId }),
     contactQuery
       .sort({ [sortBy]: sortOrder })
       .skip(skip)
@@ -24,21 +30,21 @@ export const getAllContacts = async ({ page, perPage, sortBy, sortOrder }) => {
   };
 };
 
-export const getContactById = async (contactId) => {
-  const contact = await Contact.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+  const contact = await Contact.findOne({ _id: contactId, userId });
   return contact;
 };
-export const deleteContact = async (contactId) => {
-  const contact = await Contact.findByIdAndDelete(contactId);
+export const deleteContact = async (contactId, userId) => {
+  const contact = await Contact.findOneAndDelete({ _id: contactId, userId });
   return contact;
 };
 export const createContact = async (payload) => {
   const contact = await Contact.create(payload);
   return contact;
 };
-export const updateContact = async (contactId, payload) => {
+export const updateContact = async (contactId, userId, payload) => {
   const rawResult = await Contact.findOneAndUpdate(
-    { _id: contactId },
+    { _id: contactId, userId },
     payload,
     {
       new: true,
